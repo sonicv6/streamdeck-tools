@@ -132,6 +132,20 @@ namespace BarRaider.SdTools
                 instancesLock.Release();
             }
         }
+        public async void WaitForKeyUp(string context, int time, KeyPayload payload)
+        {
+            int timeElapsed = 0;
+            while (instances[context].KeyDown)
+            {
+                await Task.Delay(100);
+                timeElapsed += 100;
+                if (timeElapsed >= time)
+                {
+                    instances[context].KeyHeld(payload);
+                    return;
+                }
+            }
+        }
 
         // Button released
         private async void Connection_OnKeyUp(object sender, SDEventReceivedEventArgs<KeyUpEvent> e)

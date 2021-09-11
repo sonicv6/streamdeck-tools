@@ -16,20 +16,6 @@ namespace BarRaider.SdTools
     public abstract class PluginBase : IKeypadPlugin
     {
         public bool KeyDown = false;
-        public async void WaitForKeyUp(int time, KeyPayload payload)
-        {
-            int timeElapsed = 0;
-            while (KeyDown)
-            {
-                await Task.Delay(100);
-                timeElapsed += 100;
-                if (timeElapsed >= time)
-                {
-                    KeyHeld(payload);
-                    return;
-                }
-            }
-        }
         /// <summary>
         /// Called when a Stream Deck key is pressed
         /// </summary>
