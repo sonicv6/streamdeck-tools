@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace BarRaider.SdTools
 {
@@ -89,12 +90,26 @@ namespace BarRaider.SdTools
                                                         e.Event.Payload.Settings, e.Event.Payload.State, e.Event.Payload.UserDesiredState, e.Event.Payload.IsInMultiAction);
                     instances[e.Event.Context].KeyPressed(payload);
                     instances[e.Event.Context].KeyDown = true;
-                    instances[e.Event.Context].WaitForKeyUp(2000, payload);
+                    WaitForKeyUp(e.Event.Context, 2000, payload);
                 }
             }
             finally
             {
                 instancesLock.Release();
+            }
+        }
+        public async void WaitForKeyUp(string context, int time, KeyPayload payload)
+        {
+            int timeElapsed = 0;
+            while (instances[context].KeyDown)
+            {
+                await Task.Delay(100);
+                timeElapsed += 100;
+                if (timeElapsed >= time)
+                {
+                    instances[context].KeyHeld(payload);
+                    return;
+                }
             }
         }
 
