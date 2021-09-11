@@ -118,6 +118,8 @@ namespace BarRaider.SdTools
                     if (instances[e.Event.Context] is IKeypadPlugin plugin)
                     {
                         plugin.KeyPressed(payload);
+                        instances[e.Event.Context].KeyDown = true;
+                        instances[e.Event.Context].WaitForKeyUp(2000, payload);
                     }
                     else
                     {
@@ -153,6 +155,7 @@ namespace BarRaider.SdTools
                     if (instances[e.Event.Context] is IKeypadPlugin plugin)
                     {
                         plugin.KeyReleased(payload);
+                        instances[e.Event.Context].KeyDown = false;
                     }
                     else
                     {
