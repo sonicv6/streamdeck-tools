@@ -88,6 +88,8 @@ namespace BarRaider.SdTools
                     KeyPayload payload = new KeyPayload(GenerateKeyCoordinates(e.Event.Payload.Coordinates),
                                                         e.Event.Payload.Settings, e.Event.Payload.State, e.Event.Payload.UserDesiredState, e.Event.Payload.IsInMultiAction);
                     instances[e.Event.Context].KeyPressed(payload);
+                    instances[e.Event.Context].KeyDown = true;
+                    instances[e.Event.Context].WaitForKeyUp(2000, payload);
                 }
             }
             finally
@@ -111,6 +113,7 @@ namespace BarRaider.SdTools
                     KeyPayload payload = new KeyPayload(GenerateKeyCoordinates(e.Event.Payload.Coordinates),
                                                         e.Event.Payload.Settings, e.Event.Payload.State, e.Event.Payload.UserDesiredState, e.Event.Payload.IsInMultiAction);
                     instances[e.Event.Context].KeyReleased(payload);
+                    instances[e.Event.Context].KeyDown = false;
                 }
             }
             finally

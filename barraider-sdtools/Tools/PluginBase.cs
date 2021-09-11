@@ -15,10 +15,30 @@ namespace BarRaider.SdTools
     /// </summary>
     public abstract class PluginBase : IDisposable
     {
+        public bool KeyDown = false;
+        public async void WaitForKeyUp(int time, KeyPayload payload)
+        {
+            int timeElapsed = 0;
+            while (KeyDown)
+            {
+                await Task.Delay(100);
+                timeElapsed += 100;
+                if (timeElapsed >= time)
+                {
+                    KeyHeld(payload);
+                    return;
+                }
+            }
+        }
         /// <summary>
         /// Called when a Stream Deck key is pressed
         /// </summary>
         public abstract void KeyPressed(KeyPayload payload);
+
+        /// <summary>
+        /// Called when a Stream Deck key is held for 2 seconds
+        /// </summary>
+        public abstract void KeyHeld(KeyPayload payload);
 
         /// <summary>
         /// Called when a Stream Deck key is released
